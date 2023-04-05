@@ -28,22 +28,20 @@ class MarkovMachine {
 
   getChains() {
     // TODO: implement this!
-    const chains = new Map ();
+    const chains = new Map();
 
-    for (let i = 0; i < this.words.length; i++){
+    for (let i = 0; i < this.words.length; i++) {
       const word = this.words[i];
-      const nextWord = this.words[i+1] || null; //NOTE: what happens if not found...
+      const nextWord = this.words[i + 1] || null; //NOTE: what happens if not found...
 
-      if (chains.get(word)){
+      if (chains.get(word)) {
         chains.get(word).push(nextWord);
       }
-      else{
+      else {
         chains.set(word, [nextWord]);
       }
     }
-    return chains
-
-
+    return chains;
   }
 
 
@@ -52,13 +50,24 @@ class MarkovMachine {
 
   getText() {
     // TODO: implement this!
-
+    let results = [];
     // - start at the first word in the input text
-    // - find a random word from the following-words of that
-    // - repeat until reaching the terminal null
+    let key = this.words[0];
+    results.push(key);
+
+    while (key !== null) {
+      let words = this.chains.get(key);
+      console.log("words=", words, "key=", key);
+      let randomIndex = Math.floor(Math.random() * words.length);
+      let randWord = words[randomIndex];
+      console.log("words after randWord=", words, "randIdx=", randomIndex)
+      results.push(randWord);
+      key = randWord;
+    }
+    return results;
   }
 }
 
 let test = new MarkovMachine("This is a cat. This was a hat.");
-const chainsTest = test.getChains();
+const chainsTest = test.getText();
 debugger;
